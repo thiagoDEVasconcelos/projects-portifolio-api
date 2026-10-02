@@ -1,0 +1,6 @@
+CREATE TABLE membro (
+    id BIGSERIAL PRIMARY KEY,
+    id_externo BIGINT NOT NULL UNIQUE,
+    nome VARCHAR(150) NOT NULL,
+    atribuicao VARCHAR(50) NOT NULL
+);
