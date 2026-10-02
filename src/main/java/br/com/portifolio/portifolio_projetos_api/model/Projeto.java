@@ -61,7 +61,7 @@ public class Projeto {
 
     @ManyToMany
     @JoinTable(
-            name = "projeto_membro",
+            name = "projeto_membros",
             joinColumns = @JoinColumn(name = "projeto_id"),
             inverseJoinColumns = @JoinColumn(name = "membro_id")
     )
