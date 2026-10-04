@@ -26,8 +26,8 @@ public class Projeto {
     private Long id;
 
     @NotBlank
-    @Size(max = 150)
-    @Column(nullable = false, length = 150)
+    @Size(max = 200)
+    @Column(nullable = false, length = 200)
     private String nome;
 
     @Column(columnDefinition = "TEXT")
