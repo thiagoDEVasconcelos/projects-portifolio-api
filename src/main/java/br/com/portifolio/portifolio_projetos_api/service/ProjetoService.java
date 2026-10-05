@@ -57,6 +57,9 @@ public class ProjetoService {
     @Transactional
     public void excluir(Long id) {
         Projeto projeto = buscarEntidade(id);
+        if (!projeto.getStatus().permiteExclusao()) {
+            throw new RegraNegocioException("Projeto com status " + projeto.getStatus() + " não pode ser excluído");
+        }
         projetoRepository.delete(projeto);
     }
 

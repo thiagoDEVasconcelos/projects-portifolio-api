@@ -19,4 +19,8 @@ public enum StatusProjeto {
         }
         return destino.ordinal() == this.ordinal() + 1;
     }
+
+    public boolean permiteExclusao() {
+        return this != INICIADO && this != EM_ANDAMENTO && this != ENCERRADO;
+    }
 }
