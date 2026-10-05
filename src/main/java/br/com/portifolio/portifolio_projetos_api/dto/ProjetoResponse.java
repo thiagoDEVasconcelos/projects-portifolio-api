@@ -1,5 +1,6 @@
 package br.com.portifolio.portifolio_projetos_api.dto;
 
+import br.com.portifolio.portifolio_projetos_api.model.ClassificacaoRisco;
 import br.com.portifolio.portifolio_projetos_api.model.StatusProjeto;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ public record ProjetoResponse(
     LocalDate dataRealTermino,
     BigDecimal orcamentoTotal,
     StatusProjeto status,
-    MembroResumoResponse gerente
+    MembroResumoResponse gerente,
+    ClassificacaoRisco risco
 ) {
 }

@@ -6,10 +6,15 @@ import br.com.portifolio.portifolio_projetos_api.dto.ProjetoResponse;
 import br.com.portifolio.portifolio_projetos_api.model.Membro;
 import br.com.portifolio.portifolio_projetos_api.model.Projeto;
 import br.com.portifolio.portifolio_projetos_api.model.StatusProjeto;
+import br.com.portifolio.portifolio_projetos_api.service.RiscoCalculator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProjetoMapper {
+
+    private final RiscoCalculator riscoCalculator;
 
     public Projeto toEntity(ProjetoRequest request, Membro gerente) {
         Projeto projeto = new Projeto();
@@ -32,7 +37,8 @@ public class ProjetoMapper {
                 projeto.getDataRealTermino(),
                 projeto.getOrcamentoTotal(),
                 projeto.getStatus(),
-                toMembroResumo(projeto.getGerente())
+                toMembroResumo(projeto.getGerente()),
+                riscoCalculator.calcular(projeto)
         );
     }
 
