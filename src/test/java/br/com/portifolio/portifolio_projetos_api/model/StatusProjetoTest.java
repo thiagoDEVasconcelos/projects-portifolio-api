@@ -43,4 +43,16 @@ class StatusProjetoTest {
             assertThat(origem.podeTransicionarPara(destino)).isFalse();
         }
     }
+
+    @ParameterizedTest
+    @EnumSource(value = StatusProjeto.class, names = {"INICIADO", "EM_ANDAMENTO", "ENCERRADO"})
+    void naoDevePermitirExclusaoNosStatusBloqueados(StatusProjeto status) {
+        assertThat(status.permiteExclusao()).isFalse();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = StatusProjeto.class, names = {"INICIADO", "EM_ANDAMENTO", "ENCERRADO"}, mode = EnumSource.Mode.EXCLUDE)
+    void devePermitirExclusaoNosDemaisStatus(StatusProjeto status) {
+        assertThat(status.permiteExclusao()).isTrue();
+    }
 }
