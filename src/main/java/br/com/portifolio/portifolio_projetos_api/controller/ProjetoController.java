@@ -1,5 +1,6 @@
 package br.com.portifolio.portifolio_projetos_api.controller;
 
+import br.com.portifolio.portifolio_projetos_api.dto.AlterarStatusRequest;
 import br.com.portifolio.portifolio_projetos_api.dto.ProjetoRequest;
 import br.com.portifolio.portifolio_projetos_api.dto.ProjetoResponse;
 import br.com.portifolio.portifolio_projetos_api.service.ProjetoService;
@@ -41,9 +42,13 @@ public class ProjetoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProjetoResponse> atualizar(@PathVariable Long id,
-                                                     @Valid @RequestBody ProjetoRequest request) {
+    public ResponseEntity<ProjetoResponse> atualizar(@PathVariable Long id, @Valid @RequestBody ProjetoRequest request) {
         return ResponseEntity.ok(service.atualizar(id, request));
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ProjetoResponse> alterarStatus(@PathVariable Long id, @Valid @RequestBody AlterarStatusRequest request) {
+        return ResponseEntity.ok(service.alterarStatus(id, request));
     }
 
     @DeleteMapping("/{id}")
