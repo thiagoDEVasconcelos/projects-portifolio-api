@@ -1,6 +1,7 @@
 package br.com.portifolio.portifolio_projetos_api.service;
 
 import br.com.portifolio.portifolio_projetos_api.dto.AlterarStatusRequest;
+import br.com.portifolio.portifolio_projetos_api.dto.ProjetoFiltro;
 import br.com.portifolio.portifolio_projetos_api.dto.ProjetoRequest;
 import br.com.portifolio.portifolio_projetos_api.dto.ProjetoResponse;
 import br.com.portifolio.portifolio_projetos_api.exception.RecursoNaoEncontradoException;
@@ -11,6 +12,7 @@ import br.com.portifolio.portifolio_projetos_api.model.Projeto;
 import br.com.portifolio.portifolio_projetos_api.model.StatusProjeto;
 import br.com.portifolio.portifolio_projetos_api.repository.MembroRepository;
 import br.com.portifolio.portifolio_projetos_api.repository.ProjetoRepository;
+import br.com.portifolio.portifolio_projetos_api.repository.ProjetoSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -41,8 +43,17 @@ public class ProjetoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProjetoResponse> listar(Pageable pageable) {
-        return projetoRepository.findAll(pageable).map(mapper::toResponse);
+    public Page<ProjetoResponse> listar(ProjetoFiltro filtro, Pageable pageable) {
+        validarFaixaDeOrcamento(filtro);
+        return projetoRepository.findAll(ProjetoSpecification.comFiltros(filtro), pageable)
+                .map(mapper::toResponse);
+    }
+
+    private void validarFaixaDeOrcamento(ProjetoFiltro filtro) {
+        if (filtro.orcamentoMin() != null && filtro.orcamentoMax() != null
+                && filtro.orcamentoMin().compareTo(filtro.orcamentoMax()) > 0) {
+            throw new RegraNegocioException("O orçamento mínimo não pode ser maior que o máximo");
+        }
     }
 
     @Transactional
@@ -89,7 +100,10 @@ public class ProjetoService {
         StatusProjeto destino = request.status();
 
         if (!atual.podeTransicionarPara(destino)) {
-        throw new RegraNegocioException("Transição de status inválida");
+            throw new RegraNegocioException("Transição de status inválida: " + atual + " → " + destino);
+        }
+        if (destino == StatusProjeto.INICIADO && projeto.getMembros().isEmpty()) {
+            throw new RegraNegocioException("O projeto precisa ter ao menos 1 membro alocado para ser iniciado");
         }
 
         projeto.setStatus(destino);

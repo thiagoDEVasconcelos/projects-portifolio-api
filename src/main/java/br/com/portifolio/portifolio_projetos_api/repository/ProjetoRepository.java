@@ -14,7 +14,7 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long>, JpaSpec
 
     @Query("""
             select count(p) from Projeto p
-            join p.equipe m
+            join p.membros m
             where m.id = :membroId
               and p.status not in :statusFinalizados
             """)
@@ -29,6 +29,6 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Long>, JpaSpec
 
     List<Projeto> findByStatusAndDataRealTerminoIsNotNull(StatusProjeto status);
 
-    @Query("select count(distinct m.id) from Projeto p join p.equipe m")
+    @Query("select count(distinct m.id) from Projeto p join p.membros m")
     long contarMembrosUnicosAlocados();
 }
