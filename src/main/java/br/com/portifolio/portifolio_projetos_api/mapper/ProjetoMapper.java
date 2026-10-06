@@ -10,6 +10,8 @@ import br.com.portifolio.portifolio_projetos_api.service.RiscoCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ProjetoMapper {
@@ -28,6 +30,10 @@ public class ProjetoMapper {
     }
 
     public ProjetoResponse toResponse(Projeto projeto) {
+        List<MembroResumoResponse> membros = projeto.getMembros().stream()
+                .map(this::toMembroResumo)
+                .toList();
+
         return new ProjetoResponse(
                 projeto.getId(),
                 projeto.getNome(),
@@ -38,7 +44,8 @@ public class ProjetoMapper {
                 projeto.getOrcamentoTotal(),
                 projeto.getStatus(),
                 toMembroResumo(projeto.getGerente()),
-                riscoCalculator.calcular(projeto)
+                riscoCalculator.calcular(projeto),
+                membros
         );
     }
 

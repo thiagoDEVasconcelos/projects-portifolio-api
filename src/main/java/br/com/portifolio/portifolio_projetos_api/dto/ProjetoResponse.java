@@ -5,6 +5,7 @@ import br.com.portifolio.portifolio_projetos_api.model.StatusProjeto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public record ProjetoResponse(
     Long id,
@@ -16,6 +17,7 @@ public record ProjetoResponse(
     BigDecimal orcamentoTotal,
     StatusProjeto status,
     MembroResumoResponse gerente,
-    ClassificacaoRisco risco
+    ClassificacaoRisco risco,
+    List<MembroResumoResponse> membros
 ) {
 }
