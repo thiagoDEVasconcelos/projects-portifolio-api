@@ -10,6 +10,7 @@ import br.com.portifolio.portifolio_projetos_api.mapper.MembroMapper;
 import br.com.portifolio.portifolio_projetos_api.model.Membro;
 import br.com.portifolio.portifolio_projetos_api.repository.MembroRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,7 @@ public class MembroService {
     private final MembroRepository membroRepository;
     private final MembroMapper mapper;
 
-    // Sem @Transactional de propósito: não faz sentido segurar uma conexão do banco durante a chamada HTTP.
-    public MembroResumoResponse criar(MembroRequest request) {
+    public MembroResumoResponse criar(@NonNull MembroRequest request) {
         MembroExternoResponse externo = membroClient.criar(
                 new MembroExternoRequest(request.nome(), request.atribuicao()));
         Membro copiaLocal = mapper.toEntity(externo);

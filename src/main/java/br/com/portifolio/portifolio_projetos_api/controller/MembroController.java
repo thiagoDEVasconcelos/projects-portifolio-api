@@ -10,11 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.net.URI;
 
 @RestController
 @RequestMapping("/membros")
+@Tag(name = "Membros", description = "Cadastro (via API externa) e consulta de membros")
 @RequiredArgsConstructor
 public class MembroController {
 
