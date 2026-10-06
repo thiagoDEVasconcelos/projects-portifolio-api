@@ -9,7 +9,7 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfig {
 
     @Bean
-    public RestClient membroRestClient(RestClient.Builder builder, @Value("${app.membros.api.url}") String baseUrl) {
-        return builder.baseUrl(baseUrl).build();
+    public RestClient membroApiRestClient(@Value("${app.membros.api.url}") String baseUrl) {
+        return RestClient.builder().baseUrl(baseUrl).build();
     }
 }
