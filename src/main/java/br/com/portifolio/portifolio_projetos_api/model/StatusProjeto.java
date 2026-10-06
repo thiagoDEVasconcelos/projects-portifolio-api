@@ -1,5 +1,7 @@
 package br.com.portifolio.portifolio_projetos_api.model;
 
+import java.util.List;
+
 public enum StatusProjeto {
     EM_ANALISE,
     ANALISE_REALIZADA,
@@ -22,5 +24,13 @@ public enum StatusProjeto {
 
     public boolean permiteExclusao() {
         return this != INICIADO && this != EM_ANDAMENTO && this != ENCERRADO;
+    }
+
+    public boolean isAtivo() {
+        return this != ENCERRADO && this != CANCELADO;
+    }
+
+    public static List<StatusProjeto> finalizados() {
+        return List.of(ENCERRADO, CANCELADO);
     }
 }

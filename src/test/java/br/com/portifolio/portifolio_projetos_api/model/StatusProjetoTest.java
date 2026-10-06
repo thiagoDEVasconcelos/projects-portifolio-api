@@ -55,4 +55,21 @@ class StatusProjetoTest {
     void devePermitirExclusaoNosDemaisStatus(StatusProjeto status) {
         assertThat(status.permiteExclusao()).isTrue();
     }
+
+    @ParameterizedTest
+    @EnumSource(value = StatusProjeto.class, names = {"ENCERRADO", "CANCELADO"})
+    void statusFinaisNaoSaoAtivos(StatusProjeto status) {
+        assertThat(status.isAtivo()).isFalse();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = StatusProjeto.class, names = {"ENCERRADO", "CANCELADO"}, mode = EnumSource.Mode.EXCLUDE)
+    void demaisStatusSaoAtivos(StatusProjeto status) {
+        assertThat(status.isAtivo()).isTrue();
+    }
+
+    @Test
+    void finalizadosDeveConterEncerradoECancelado() {
+        assertThat(StatusProjeto.finalizados()).containsExactlyInAnyOrder(ENCERRADO, CANCELADO);
+    }
 }
