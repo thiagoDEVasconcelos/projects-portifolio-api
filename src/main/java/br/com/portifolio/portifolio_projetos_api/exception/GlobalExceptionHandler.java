@@ -49,9 +49,22 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> tratarErroInesperado(Exception ex) {
+        if (ex instanceof org.springframework.web.ErrorResponse erroDoFramework) {
+            int status = erroDoFramework.getStatusCode().value();
+            return ResponseEntity.status(status).body(new ErroResponse(status, mensagemPara(status)));
+        }
         log.error("Erro inesperado", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErroResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Erro interno do servidor"));
+    }
+
+    private String mensagemPara(int status) {
+        return switch (status) {
+            case 404 -> "Recurso não encontrado";
+            case 405 -> "Método HTTP não permitido para este recurso";
+            case 415 -> "Tipo de conteúdo não suportado";
+            default -> "Requisição inválida";
+        };
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
